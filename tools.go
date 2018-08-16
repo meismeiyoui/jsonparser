@@ -213,7 +213,7 @@ func setInArray(j *simplejson.Json, path []nodeStu, val ...interface{}) (ret int
 	for i, _ := range a {
 		ret = setPath(j.GetIndex(i), path, val...)
 
-		Roadmap("LastArrayKind====", cn.NodeName, cn.kind)
+		// Roadmap("LastArrayKind====", cn.NodeName, cn.kind)
 		if cn.kind == LastArrayElemKind {
 			val = val[1:]
 		}
@@ -235,7 +235,7 @@ func setInMap(j *simplejson.Json, path []nodeStu, val ...interface{}) (ret int) 
 
 	node := path[0].NodeName
 	child := j.Get(node)
-	Roadmap("mappath", path, child.Interface())
+	// Roadmap("mappath", path, child.Interface())
 	setPath(child, path[1:], val...)
 
 	return Success

@@ -20,36 +20,8 @@ var tmplInStr = `{
 
 		"endpoints": [{
 			"endpointId": "bl_common1",
-			"friendlyName": "卧室灯",
-			"isReachable": true,
-			"description": "由BroadLink生产的灯",
-			"manufacturerName": "Sample Manufacturer",
-			"icon": "产品图片URL",
-			"brand": "品牌",
-			"displayCategories": [
-				"LIGHT"
-			],
-			"roomName": "用户设置的房间名称",
-			"cookie": {
-				"familyId": "家庭id",
-				"familyName": "用户设置的家庭名称",
-				"extraDetail1": "某些设备可能会用到这个cookie，需要在控制时原样返回",
-				"extraDetail2": "某些设备可能会用到这个cookie，需要在控制时原样返回",
-				"extraDetail3": "某些设备可能会用到这个cookie，需要在控制时原样返回",
-				"extraDetail4": "某些设备可能会用到这个cookie，需要在控制时原样返回"
-			},
-			"capabilities": [{
-				"type": "DNAInterface",
-				"interface": "DNA.PowerControl",
-				"version": "2",
-				"properties": {
-					"supported": [{
-						"name": "powerState"
-					}],
-					"proactivelyReported": true,
-					"retrievable": true
-				}
-			}]
+			"friendlyName": "卧室灯"
+
 		}],
 		
 		"payload": {
@@ -67,14 +39,22 @@ var tmplInStr = `{
 var tmplOutStr = `{
 	"directive": {
 		"header": {
-			"namespace": "Alexa.Discovery",
-			"name": "Discover",
+			"namespace": "DNA.Discovery",
+			"name": "bl_common3",
 			"interfaceVersion": "bl_common2",
 			"messageId": "1bd5d003-31b9-476f-ad03-71d471922820"
 		},
+
+		"hello": {
+			"endpoints": [{
+				"endpointId": "bl_common1",
+				"friendlyName": "卧室灯"
+
+			}]
+		},
+
 		"payload": {
 			"scope": {
-				"type": "bl_common1",
 				"token": "some-access-token"
 			},
 			"options": {
@@ -89,8 +69,8 @@ var inStr = `{
 	"directive": {
 		"header": {
 			"namespace": "DNA.Discovery",
-			"name": "bl_common3",
-			"interfaceVersion": "bl_common2",
+			"name": "inStr",
+			"interfaceVersion": "2",
 			"messageId": "1bd5d003-31b9-476f-ad03-71d471922820"
 		},
 
@@ -116,13 +96,45 @@ var inStr = `{
 	}
 }`
 
+var outStr = `{
+	"directive": {
+		"header": {
+			"namespace": "Alex.Discovery",
+			"name": "bl_common3",
+			"interfaceVersion": "bl_common2",
+			"messageId": "1bd5d003-31b9-476f-ad03-71d471922820"
+		},
+
+		"hello": {
+			"endpoints": [{
+				"endpointId": "abcd"
+			},
+			{
+				"endpointId": "eeeeee"
+			}
+			]
+		},
+		
+		"payload": {
+			"scope": {
+				"type": "ccccccc",
+				"token": "some-access-token"
+			},
+			"options": {
+				"enableIntent": false,
+				"additionals": {}
+			}
+		}
+	}
+}`
+
 func TestJsonParse(t *testing.T) {
-	jp, err := NewJsonParser(tmplInStr, tmplOutStr, inStr)
+	jp, err := NewJsonParser(tmplInStr, tmplOutStr)
 	assert.Equal(t, err, nil)
 
-	out, ret := jp.GetResult()
+	out, ret := jp.GetResult(inStr, outStr)
 	assert.Equal(t, ret, Success)
-	fmt.Println(out)
+	fmt.Println(PrettyPrintJson(out))
 
 }
 
