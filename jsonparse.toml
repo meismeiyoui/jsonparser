@@ -1,4 +1,9 @@
 [Prefixes]
     Common = ["bl_common"]
-    In = []
-    Out = []
+    In = ["bl_in"]
+    Out = ["bl_out"]
+
+[Rules]
+    [Out]
+        bl_out1=["bl_in1[:15]", "hello"]
+    

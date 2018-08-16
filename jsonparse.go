@@ -1,9 +1,5 @@
 package jsonparse
 
-import (
-	"log"
-)
-
 type jsonParserStu struct {
 	tmplIn  *templateParserStu
 	tmplOut *templateParserStu
@@ -49,22 +45,22 @@ func (r *RuleStu) applyRule(inVal string, outVal *string) {
 	return
 }
 
-func (jp *jsonParserStu) GetResult() (s string, err error) {
-	s, err = jp.parseJson()
+func (jp *jsonParserStu) GetResult() (s string, ret int) {
+	s, ret = jp.parseJson()
 	return
 }
 
-func (jp *jsonParserStu) parseJson() (out string, err error) {
+func (jp *jsonParserStu) parseJson() (out string, ret int) {
 	// 1. common rule
 	var outTemp = jp.tmplOut.strTmpl
 
 	for tag, _ := range jp.tmplOut.tagPaths {
-		valIn, err := jp.tmplIn.GetTag(jp.inStr, tag)
-		if err != nil {
-			log.Fatal(err)
+		valIn, ret := jp.tmplIn.GetTag(jp.inStr, tag)
+		if ret != Success {
+			Error(ret)
 			continue
 		}
-		jp.tmplOut.SetTag(&outTemp, tag, valIn)
+		jp.tmplOut.SetTag(&outTemp, tag, valIn...)
 	}
 
 	// 2. rules
